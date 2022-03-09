@@ -9,16 +9,18 @@ public class User {
    private Long id;
    private String username;
    private String password;
+   private double userBalance;
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
 
-   public User(Long id, String username, String password, String authorities) {
+   public User(Long id, String username, String password, String authorities, double userBalance) {
       this.id = id;
       this.username = username;
       this.password = password;
       this.activated = true;
+      this.userBalance = userBalance;
    }
 
    public Long getId() {

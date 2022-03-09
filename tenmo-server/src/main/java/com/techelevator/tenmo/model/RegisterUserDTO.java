@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 public class RegisterUserDTO {
@@ -8,6 +9,17 @@ public class RegisterUserDTO {
     private String username;
     @NotEmpty
     private String password;
+
+
+    private double initialBalance = 1000.00;
+
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(double initialBalance) {
+        this.initialBalance = initialBalance;
+    }
 
     public String getUsername() {
         return username;
