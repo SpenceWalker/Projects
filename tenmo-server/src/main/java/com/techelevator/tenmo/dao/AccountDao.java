@@ -7,8 +7,12 @@ public interface AccountDao {
 
     Account findAccountBalance(int userId, int accountId) throws AccountNotFoundException;
 
+
     Account findAccountUsingUserId(int userId) throws AccountNotFoundException;
 
     Account findUserUsingAccountId(int accountId) throws AccountNotFoundException;
+
+    Account updateAccount(Account account, int id)throws AccountNotFoundException;
+
 
 }

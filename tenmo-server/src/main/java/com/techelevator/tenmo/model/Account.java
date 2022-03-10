@@ -2,6 +2,7 @@ package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
+import java.security.Principal;
 
 public class Account {
 
@@ -50,4 +51,6 @@ public class Account {
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
+
+
 }

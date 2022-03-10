@@ -40,6 +40,23 @@ public class JdbcAccountDao implements AccountDao{
     }
 
 
+//    @Override
+//    public Account get(int accountId, String userName) throws AccountNotFoundException {
+//
+//        String sql = "SELECT account.account_id, account.user_id, account.balance, tenmo_user.username " +
+//                     "FROM account" +
+//                     "JOIN tenmo_user ON account.user_id = tenmo_user.user_id" +
+//                     "WHERE account_id = ?;";
+//
+//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, userName);
+//
+//        if (results.next()){
+//            return mapRowToAccount(results);
+//        }
+//
+//            throw new AccountNotFoundException();
+//    }
+
     @Override
     public Account findAccountUsingUserId(int userId) throws AccountNotFoundException {
 
@@ -66,6 +83,23 @@ public class JdbcAccountDao implements AccountDao{
         }
         throw new AccountNotFoundException();
     }
+
+    @Override
+    public Account updateAccount(Account account, int id) throws AccountNotFoundException {
+
+       String sql = "UPDATE account" +
+               "SET user_id = ?," +
+               "balance = ?" +
+               "WHERE account_id = ?;";
+
+       jdbcTemplate.update(sql,
+               account.getUserId(),
+               account.getAccountBalance(),
+               id);
+
+        return null;
+    }
+
 
     private Account mapRowToAccount(SqlRowSet row) {
 

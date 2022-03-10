@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
-public class JdbcTransferDao {
+@Component
+public class JdbcTransferDao implements TransferDao{
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -23,7 +23,27 @@ public class JdbcTransferDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Transfer findTransferByTransferId(int transferId) throws TransferNotFoundException {
+
+    @Override
+    public Transfer create(Transfer transfer)
+                          throws TransferNotFoundException{
+
+         String sql = "INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                      "VALUES              (?, ?, ?, ?, ?)";
+
+         Integer transferId = jdbcTemplate.queryForObject(sql, Integer.class,
+                 transfer.getTransferTypeId(),
+                 transfer.getTransferStatusId(),
+                 transfer.getAccountFrom(),
+                 transfer.getAccountTo(),
+                 transfer.getAmount());
+
+         return get(transferId);
+
+    }
+
+    @Override
+    public Transfer get(int transferId) throws TransferNotFoundException {
 
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, " +
                              "account_from, account_to, amount " +
@@ -38,6 +58,45 @@ public class JdbcTransferDao {
             throw new TransferNotFoundException();
     }
 
+    @Override
+    public Transfer update(Transfer transfer, int id)
+                          throws TransferNotFoundException {
+
+        String sql = "UPDATE transfer " +
+                "SET transfer_type_id = ?," +
+                "transfer_status_id = ?," +
+                "account_from = ?," +
+                "account_to = ?," +
+                "amount = ?" +
+                "WHERE transfer_id = ?;";
+
+        jdbcTemplate.update(sql,
+                transfer.getTransferTypeId(),
+                transfer.getTransferStatusId(),
+                transfer.getAccountFrom(),
+                transfer.getAccountTo(),
+                transfer.getAmount(),
+                id);
+
+        //unsure of return
+
+        return get(id);
+    }
+
+    @Override
+    public Transfer getTypeId(int typeId) {
+
+
+        return null;
+    }
+
+    @Override
+    public Transfer getStatusId(int statusId) {
+        return null;
+    }
+
+
+
     private Transfer mapRowToTransfer(SqlRowSet row){
         Transfer transfer = new Transfer();
 
@@ -49,4 +108,7 @@ public class JdbcTransferDao {
 
         return transfer;
     }
+
+
+
 }

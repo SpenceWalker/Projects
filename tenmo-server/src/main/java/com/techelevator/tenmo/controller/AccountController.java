@@ -21,6 +21,8 @@ import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.security.jwt.TokenProvider;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+
 @PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/account")
@@ -48,5 +50,13 @@ public class AccountController {
     @RequestMapping(path = "/{accountId}", method = RequestMethod.GET)
     public Account getUser(@Valid @PathVariable int accountId) throws AccountNotFoundException {
         return accountDao.findUserUsingAccountId(accountId);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public Account updateAccount(@Valid @RequestBody Account account, @PathVariable int id, Principal principal )
+            throws AccountNotFoundException {
+
+        return accountDao.updateAccount(account, id);
+
     }
 }
