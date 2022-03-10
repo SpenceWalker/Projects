@@ -7,6 +7,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.model.*;
 import exceptions.AccountNotFoundException;
+import exceptions.AuthorizationException;
 import exceptions.TransferNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.techelevator.tenmo.dao.UserDao;
@@ -62,8 +64,13 @@ public class TransferController {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
+    @Transactional
     public Transfer createTransfer(@Valid @RequestBody Transfer transfer, Principal principal)
-                                  throws TransferNotFoundException {
+            throws TransferNotFoundException, AuthorizationException {
+
+        if (transfer.getAccountFrom() == transfer.getAccountTo()){
+            throw new AuthorizationException();
+        }
 
 
         return transferDao.create(transfer);
