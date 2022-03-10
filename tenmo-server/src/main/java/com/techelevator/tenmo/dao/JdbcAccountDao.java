@@ -26,88 +26,11 @@ public class JdbcAccountDao implements AccountDao{
 
 
     @Override
-    public Account get(int id) throws AccountNotFoundException {
-
-        String sql = "SELECT *" +
-                     "FROM account " +
-                     "JOIN tenmo_user USING (user_id) " +
-                     "WHERE account_id = ?;";
-
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
-
-        if (results.next()){
-            return mapRowToAccount(results);
-        }
-
-        throw new AccountNotFoundException();
-    }
-
-    @Override
-    public Account findAccountBalance(int userId, int accountId) throws AccountNotFoundException {
-
-        String sql = "SELECT balance FROM account WHERE user_id = ? AND account_id = ?;";
-
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, accountId);
-
-        if (results.next()){
-            return mapRowToAccount(results);
-        }
-
-        throw new AccountNotFoundException();
-
-    }
-
-
-//    @Override
-//    public Account get(int accountId, String userName) throws AccountNotFoundException {
-//
-//        String sql = "SELECT account.account_id, account.user_id, account.balance, tenmo_user.username " +
-//                     "FROM account" +
-//                     "JOIN tenmo_user ON account.user_id = tenmo_user.user_id" +
-//                     "WHERE account_id = ?;";
-//
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, userName);
-//
-//        if (results.next()){
-//            return mapRowToAccount(results);
-//        }
-//
-//            throw new AccountNotFoundException();
-//    }
-
-    @Override
-    public Account findAccountUsingUserId(int userId) throws AccountNotFoundException {
-
-        String sql = "SELECT account_id FROM account WHERE user_id = ?;";
-
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-
-        if (results.next()){
-            return mapRowToAccount(results);
-        }
-
-        throw new AccountNotFoundException();
-    }
-
-    @Override
-    public Account findUserUsingAccountId(int accountId) throws AccountNotFoundException {
-
-        String sql = "SELECT user_id FROM account WHERE account_id = ?;";
-
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,accountId);
-
-        if (results.next()){
-            return mapRowToAccount(results);
-        }
-        throw new AccountNotFoundException();
-    }
-
-    @Override
     public Account updateAccount(Account account, int id) throws AccountNotFoundException {
 
-       String sql = "UPDATE account" +
+       String sql = "UPDATE account " +
                "SET user_id = ?," +
-               "balance = ?" +
+               "balance = ? " +
                "WHERE account_id = ?;";
 
        jdbcTemplate.update(sql,
@@ -119,18 +42,20 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public void deleteAccount(int id) throws AccountNotFoundException, AuthorizationException {
+    public Account getAccountByUsername(String username) throws AccountNotFoundException {
 
-        String sql = "DELETE" +
-                     "FROM account" +
-                     "WHERE account_id = ? ;";
+        String sql = "SELECT account.account_id, account.user_id, account.balance " +
+                    "FROM account " +
+                    "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                    "WHERE username = ?;";
 
-        int rowsAffected = jdbcTemplate.update(sql, id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
 
-        if (rowsAffected == 0){
-            throw new AccountNotFoundException();
+        if (results.next()){
+            return mapRowToAccount(results);
         }
 
+        throw new AccountNotFoundException();
     }
 
 

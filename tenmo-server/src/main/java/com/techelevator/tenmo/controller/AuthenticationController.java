@@ -63,7 +63,6 @@ public class AuthenticationController {
 
 
 
-    //account balance
 
     /**
      * Object to return as body in JWT Authentication.
