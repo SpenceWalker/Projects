@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.model;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -95,5 +96,9 @@ public class User {
               ", activated=" + activated +
               ", authorities=" + authorities +
               '}';
+   }
+
+   public boolean canUserUpdateOrDelete(Principal principal){
+      return isActivated() && this.username.equals(principal.getName());
    }
 }

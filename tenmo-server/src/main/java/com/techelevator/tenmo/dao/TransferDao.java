@@ -1,12 +1,13 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
+import exceptions.AccountNotFoundException;
 import exceptions.TransferNotFoundException;
 
 public interface TransferDao {
 
 
-    public Transfer create(Transfer transfer) throws TransferNotFoundException;
+    public Transfer create(Transfer transfer, int accountId) throws TransferNotFoundException, AccountNotFoundException;
 
     public Transfer get(int transferId) throws TransferNotFoundException;
 
@@ -14,7 +15,7 @@ public interface TransferDao {
 
     public Transfer getStatusId(int statusId);
 
-    public Transfer update(Transfer transfer, int transferId) throws TransferNotFoundException;
+    public Transfer update(Transfer transfer, int transferId, int id) throws TransferNotFoundException;
 
 
 

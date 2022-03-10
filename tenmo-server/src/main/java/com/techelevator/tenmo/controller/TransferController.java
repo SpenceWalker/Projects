@@ -65,24 +65,28 @@ public class TransferController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
     @Transactional
-    public Transfer createTransfer(@Valid @RequestBody Transfer transfer, Principal principal)
-            throws TransferNotFoundException, AuthorizationException {
+    public Transfer createTransfer(@Valid @RequestBody Transfer transfer, int id, Principal principal)
+            throws TransferNotFoundException, AuthorizationException, AccountNotFoundException {
 
         if (transfer.getAccountFrom() == transfer.getAccountTo()){
             throw new AuthorizationException();
         }
 
 
-        return transferDao.create(transfer);
+        return transferDao.create(transfer, id);
     }
 
 
     @RequestMapping(path =  "/{id}",method = RequestMethod.PUT)
-    public Transfer updateTransfer(@Valid @RequestBody Transfer transfer, @PathVariable int id,
-                                   Principal principal)throws TransferNotFoundException{
+    public Transfer updateTransfer(@Valid @RequestBody Transfer transfer, @PathVariable int fromId,
+                                   int toId,Principal principal)throws TransferNotFoundException{
 
-        transfer.setTransferId(id);
 
-        return transferDao.update(transfer, id);
+        transfer.setTransferId(fromId);
+        transfer.setTransferId(toId);
+
+        return transferDao.update(transfer, fromId, toId);
     }
+
+
 }

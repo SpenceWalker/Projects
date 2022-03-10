@@ -3,6 +3,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import exceptions.AccountNotFoundException;
+import exceptions.AuthorizationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -23,6 +24,23 @@ public class JdbcAccountDao implements AccountDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    @Override
+    public Account get(int id) throws AccountNotFoundException {
+
+        String sql = "SELECT *" +
+                     "FROM account " +
+                     "JOIN tenmo_user USING (user_id) " +
+                     "WHERE account_id = ?;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+
+        if (results.next()){
+            return mapRowToAccount(results);
+        }
+
+        throw new AccountNotFoundException();
+    }
 
     @Override
     public Account findAccountBalance(int userId, int accountId) throws AccountNotFoundException {
@@ -98,6 +116,21 @@ public class JdbcAccountDao implements AccountDao{
                id);
 
         return null;
+    }
+
+    @Override
+    public void deleteAccount(int id) throws AccountNotFoundException, AuthorizationException {
+
+        String sql = "DELETE" +
+                     "FROM account" +
+                     "WHERE account_id = ? ;";
+
+        int rowsAffected = jdbcTemplate.update(sql, id);
+
+        if (rowsAffected == 0){
+            throw new AccountNotFoundException();
+        }
+
     }
 
 

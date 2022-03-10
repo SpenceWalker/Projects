@@ -25,8 +25,13 @@ public class JdbcTransferDao implements TransferDao{
 
 
     @Override
-    public Transfer create(Transfer transfer)
-                          throws TransferNotFoundException{
+    public Transfer create(Transfer transfer,  int accountId)
+                           throws TransferNotFoundException, AccountNotFoundException{
+
+        Boolean doesAccountExist = doesAccountExist(accountId);
+        if (doesAccountExist == null || !doesAccountExist){
+            throw new AccountNotFoundException();
+        }
 
          String sql = "INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                       "VALUES              (?, ?, ?, ?, ?)";
@@ -41,6 +46,7 @@ public class JdbcTransferDao implements TransferDao{
          return get(transferId);
 
     }
+
 
     @Override
     public Transfer get(int transferId) throws TransferNotFoundException {
@@ -59,7 +65,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public Transfer update(Transfer transfer, int id)
+    public Transfer update(Transfer transfer, int transferId, int id)
                           throws TransferNotFoundException {
 
         String sql = "UPDATE transfer " +
@@ -76,6 +82,7 @@ public class JdbcTransferDao implements TransferDao{
                 transfer.getAccountFrom(),
                 transfer.getAccountTo(),
                 transfer.getAmount(),
+                transferId,
                 id);
 
         //unsure of return
@@ -109,6 +116,14 @@ public class JdbcTransferDao implements TransferDao{
         return transfer;
     }
 
+    private Boolean doesAccountExist(int accountId){
 
+        String sqlAccountExists = "SELECT EXISTS " +
+                                  "(SELECT * " +
+                                  "FROM account " +
+                                  "WHERE account_id = ?);";
+
+        return jdbcTemplate.queryForObject(sqlAccountExists, Boolean.class, accountId);
+    }
 
 }
