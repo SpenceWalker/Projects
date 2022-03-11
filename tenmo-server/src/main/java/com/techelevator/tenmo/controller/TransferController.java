@@ -42,51 +42,42 @@ public class TransferController {
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public Transfer getTransfer(@PathVariable int id, Principal principal)
-                                throws TransferNotFoundException{
+            throws TransferNotFoundException, AccountNotFoundException {
 
-        return transferDao.get(id);
-    }
 
-    @RequestMapping(path = "/{typeId}", method = RequestMethod.GET)
-    public Transfer getTypeId(@PathVariable int typeId, Principal principal)
-                             throws TransferNotFoundException{
-
-        return transferDao.getTypeId(typeId);
-    }
-
-    @RequestMapping(path = "/{statusId}", method = RequestMethod.GET)
-    public Transfer getStatusId(@PathVariable int statusId, Principal principal)
-                                throws TransferNotFoundException{
-
-        return transferDao.getStatusId(statusId);
+        return transferDao.getTransfersSentReceived(id, principal.getName());
     }
 
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
     @Transactional
-    public Transfer createTransfer(@Valid @RequestBody Transfer transfer, int id, Principal principal)
+    public Transfer createTransfer(@Valid @RequestBody Transfer transfer, Principal principal)
             throws TransferNotFoundException, AuthorizationException, AccountNotFoundException {
 
         if (transfer.getAccountFrom() == transfer.getAccountTo()){
             throw new AuthorizationException();
         }
 
+         Account account = accountDao.getAccountByUsername(principal.getName());
 
-        return transferDao.create(transfer, id);
+        if (transfer.getAccountFrom() != account.getAccountId()){
+            throw new AuthorizationException();
+        }
+
+        if (transfer.getAmount() > account.getAccountBalance()){
+            throw new AuthorizationException();
+        }
+
+        if (transfer.getAmount() <= 0){
+            throw new AuthorizationException();
+        }
+
+        return transferDao.createTransfer(transfer, principal.getName());
     }
 
 
-    @RequestMapping(path =  "/{id}",method = RequestMethod.PUT)
-    public Transfer updateTransfer(@Valid @RequestBody Transfer transfer, @PathVariable int fromId,
-                                   int toId,Principal principal)throws TransferNotFoundException{
 
-
-        transfer.setTransferId(fromId);
-        transfer.setTransferId(toId);
-
-        return transferDao.update(transfer, fromId, toId);
-    }
 
 
 }

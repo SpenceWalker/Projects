@@ -39,6 +39,8 @@ public class AccountController {
     }
 
 
+
+
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public Account getAuthUserAccount(Principal principal)
                         throws AccountNotFoundException{

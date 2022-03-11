@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +26,6 @@ public class JdbcAccountDao implements AccountDao{
     }
 
 
-    @Override
-    public Account updateAccount(Account account, int id) throws AccountNotFoundException {
-
-       String sql = "UPDATE account " +
-               "SET user_id = ?," +
-               "balance = ? " +
-               "WHERE account_id = ?;";
-
-       jdbcTemplate.update(sql,
-               account.getUserId(),
-               account.getAccountBalance(),
-               id);
-
-        return null;
-    }
 
     @Override
     public Account getAccountByUsername(String username) throws AccountNotFoundException {
@@ -56,6 +42,27 @@ public class JdbcAccountDao implements AccountDao{
         }
 
         throw new AccountNotFoundException();
+    }
+
+    @Override
+    public void addToBalance(BigDecimal amount, int accountId) {
+
+        String sql = "UPDATE account " +
+                     "SET  balance = balance + ? " +
+                     "WHERE account_id = ? ;";
+
+        jdbcTemplate.queryForRowSet(sql, amount, accountId);
+
+    }
+
+    @Override
+    public void subtractFromBalance(BigDecimal amount, Principal principal) {
+
+        String sql = "UPDATE account " +
+                     "SET balance = balance - ? " +
+                     "WHERE account_id = ? ;";
+
+        jdbcTemplate.queryForRowSet(sql, amount, principal);
     }
 
 

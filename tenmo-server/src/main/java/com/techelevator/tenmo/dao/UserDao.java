@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.User;
+import exceptions.UserNotFoundException;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface UserDao {
     int findIdByUsername(String username);
 
     boolean create(String username, String password, double initialBalance);
+
+    User findByUserId(int id) throws UserNotFoundException;
 }

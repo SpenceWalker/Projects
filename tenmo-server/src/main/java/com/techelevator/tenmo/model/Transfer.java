@@ -26,6 +26,7 @@ public class Transfer {
     private double amount;
 
 
+
     public Transfer(){
     }
 
