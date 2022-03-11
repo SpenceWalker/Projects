@@ -52,7 +52,7 @@ public class TransferController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @RequestMapping(path = "", method = RequestMethod.POST)
     @Transactional
-    public Transfer createTransfer(@Valid @RequestBody Transfer transfer, Principal principal)
+    public void createTransfer(@Valid @RequestBody Transfer transfer, Principal principal)
             throws TransferNotFoundException, AuthorizationException, AccountNotFoundException {
 
         if (transfer.getAccountFrom() == transfer.getAccountTo()){
@@ -73,7 +73,7 @@ public class TransferController {
             throw new AuthorizationException();
         }
 
-        return transferDao.createTransfer(transfer, principal.getName());
+         transferDao.createTransfer(transfer, principal.getName());
     }
 
 

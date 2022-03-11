@@ -7,7 +7,7 @@ import exceptions.TransferNotFoundException;
 public interface TransferDao {
 
 
-    public Transfer createTransfer(Transfer transfer, String username) throws TransferNotFoundException, AccountNotFoundException;
+    public void createTransfer(Transfer transfer, String username) throws TransferNotFoundException, AccountNotFoundException;
 
     public Transfer getTransfersSentReceived(int transferId, String name) throws TransferNotFoundException;
 

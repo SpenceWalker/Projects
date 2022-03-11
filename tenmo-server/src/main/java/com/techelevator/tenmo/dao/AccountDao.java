@@ -14,7 +14,5 @@ public interface AccountDao {
 
     Account getAccountByUsername(String username) throws AccountNotFoundException;
 
-    void addToBalance(BigDecimal amount, int accountId);
 
-    void subtractFromBalance(BigDecimal amount, Principal principal);
 }

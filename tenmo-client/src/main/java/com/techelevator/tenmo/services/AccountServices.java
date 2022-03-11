@@ -11,18 +11,24 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
-public class AccountServices extends Account{
+public class AccountServices{
 
     private static final String API_BASE_URL = "http://localhost:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
 
 
-    public Account getBalance(Account accountId){
+    private String authToken = null;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public Account getBalance(){
 
         Account getBalance = null;
 
+
         try {
-            getBalance = restTemplate.getForObject(API_BASE_URL + "/account/user" + accountId, Account.class);
+            getBalance = restTemplate.getForObject(API_BASE_URL + "/account/user", Account.class);
         }catch (RestClientResponseException | ResourceAccessException e ) {
             BasicLogger.log(e.getMessage());
         }

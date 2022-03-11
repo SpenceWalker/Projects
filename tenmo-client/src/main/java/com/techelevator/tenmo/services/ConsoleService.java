@@ -1,12 +1,16 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+import org.springframework.http.*;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ConsoleService {
+
+    public UserService userService = new UserService();
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -68,6 +72,17 @@ public class ConsoleService {
         }
     }
 
+    public int promptForUserId(){
+        System.out.println();
+        while (true){
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please don't do that");
+            }
+        }
+    }
+
     public BigDecimal promptForBigDecimal(String prompt) {
         System.out.print(prompt);
         while (true) {
@@ -86,6 +101,10 @@ public class ConsoleService {
 
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
+    }
+
+    public void printAllUsers(User[] users){
+        System.out.println("Here is a list of all available users to send money to");
     }
 
 }

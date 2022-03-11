@@ -22,7 +22,7 @@ public class JdbcTransferDao implements TransferDao{
 
 
     @Override
-    public Transfer createTransfer(Transfer transfer,  String username)
+    public void createTransfer(Transfer transfer,  String username)
             throws AccountNotFoundException, TransferNotFoundException {
 
         Boolean doesAccountExist = doesAccountExist(transfer.getAccountTo(),transfer.getAccountFrom());
@@ -30,25 +30,30 @@ public class JdbcTransferDao implements TransferDao{
             throw new AccountNotFoundException();
         }
 
-         String sql = "INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+         String sql =
+                              "BEGIN TRANSACTION;" +
+                              "INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                       "VALUES              (?, ?, ?, ?, ?);" +
-                      "UPDATE               Account " +
-                      "SET                  balance = ? " +
+                      "UPDATE               account " +
+                      "SET                  balance = balance - ? " +
                       "WHERE                account_id = ?;" +
-                      "UPDATE               Account " +
-                      "SET                  balance = ? " +
-                      "WHERE                user_id = ?;";
+                      "UPDATE               account " +
+                      "SET                  balance = balance + ? " +
+                      "WHERE                account_id = ?;" +
+                                      "COMMIT;";
 
 
 
-         Integer transferId = jdbcTemplate.queryForObject(sql, Integer.class,
+         jdbcTemplate.update(sql,
                  transfer.getTransferTypeId(),
                  transfer.getTransferStatusId(),
                  transfer.getAccountFrom(),
                  transfer.getAccountTo(),
-                 transfer.getAmount());
-
-         return getTransfersSentReceived(transferId, username);
+                 transfer.getAmount(),
+                 transfer.getAmount(),
+                 transfer.getAccountFrom(),
+                 transfer.getAmount(),
+                 transfer.getAccountTo());
 
     }
 
@@ -59,7 +64,8 @@ public class JdbcTransferDao implements TransferDao{
         String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, " +
                              "account_from, account_to, amount " +
                      "FROM transfer " +
-                     "WHERE transfer_id = ?;";
+                     "JOIN account " +
+                     "WHERE user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql,transferId);
 
@@ -68,6 +74,9 @@ public class JdbcTransferDao implements TransferDao{
         }
             throw new TransferNotFoundException();
     }
+
+
+
 //
 //    @Override
 //    public Transfer update(Transfer transfer, int transferId, int id)

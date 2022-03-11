@@ -44,26 +44,6 @@ public class JdbcAccountDao implements AccountDao{
         throw new AccountNotFoundException();
     }
 
-    @Override
-    public void addToBalance(BigDecimal amount, int accountId) {
-
-        String sql = "UPDATE account " +
-                     "SET  balance = balance + ? " +
-                     "WHERE account_id = ? ;";
-
-        jdbcTemplate.queryForRowSet(sql, amount, accountId);
-
-    }
-
-    @Override
-    public void subtractFromBalance(BigDecimal amount, Principal principal) {
-
-        String sql = "UPDATE account " +
-                     "SET balance = balance - ? " +
-                     "WHERE account_id = ? ;";
-
-        jdbcTemplate.queryForRowSet(sql, amount, principal);
-    }
 
 
     private Account mapRowToAccount(SqlRowSet row) {
