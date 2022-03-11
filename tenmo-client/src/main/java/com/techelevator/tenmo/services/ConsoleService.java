@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import org.springframework.http.*;
@@ -82,17 +83,17 @@ public class ConsoleService {
             }
         }
     }
-
-    public BigDecimal promptForBigDecimal(String prompt) {
-        System.out.print(prompt);
-        while (true) {
-            try {
-                return new BigDecimal(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a decimal number.");
-            }
-        }
-    }
+//
+//    public BigDecimal promptForBigDecimal(String prompt) {
+//        System.out.print(prompt);
+//        while (true) {
+//            try {
+//                return new BigDecimal(scanner.nextLine());
+//            } catch (NumberFormatException e) {
+//                System.out.println("Please enter a decimal number.");
+//            }
+//        }
+//    }
 
     public void pause() {
         System.out.println("\nPress Enter to continue...");
@@ -107,4 +108,16 @@ public class ConsoleService {
         System.out.println("Here is a list of all available users to send money to");
     }
 
+    public void printBalance(Account accounts){
+        System.out.println("----------------");
+        System.out.println("Welcome valued customer");
+        System.out.println("Account Balance details ");
+        if (accounts == null){
+            System.out.println("No account could be found, please try again.");
+        }else {
+            System.out.println("Account Id: " + accounts.getAccountId());
+            System.out.println("User Id: " + accounts.getUserId());
+            System.out.println("Account balance: " + accounts.getBalance());
+        }
+    }
 }

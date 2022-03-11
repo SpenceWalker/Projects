@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
@@ -94,11 +95,18 @@ public class App {
 
 	private void viewCurrentBalance() {
 
-        accountServices.getBalance();
-
+        Account getBalance = accountServices.getBalance();
+        printBalanceOrError(getBalance);
 		// TODO Auto-generated method stub
-		
 	}
+
+    private void printBalanceOrError(Account account){
+        if (account != null){
+            consoleService.printBalance(account);
+        }else {
+            consoleService.printErrorMessage();
+        }
+    }
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
@@ -123,7 +131,7 @@ public class App {
         }int userId = consoleService.promptForUserId();
 	}
 
-    BigDecimal bucks = consoleService.promptForBigDecimal("Enter amount as a decimal number");
+//    BigDecimal bucks = consoleService.promptForBigDecimal("Enter amount as a decimal number");
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
