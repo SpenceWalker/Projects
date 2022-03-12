@@ -62,7 +62,7 @@ public class JdbcTransferDao implements TransferDao{
 
 
     @Override
-    public List<Transfer> getTransfersSentReceived(int userId, String name)
+    public List<Transfer> getTransfersSentReceived(String name)
                                                    throws TransferNotFoundException {
 
         List<Transfer> transfers = new ArrayList<>();
@@ -74,10 +74,15 @@ public class JdbcTransferDao implements TransferDao{
                 "JOIN account AS acc_to ON transfer.account_from = acc_to.account_id " +
                 "JOIN tenmo_user AS from_user ON acc_from.user_id = from_user.user_id " +
                 "JOIN tenmo_user AS to_user ON acc_to.user_id = to_user.user_id " +
-                "WHERE acc_from.user_id = 1001 AND acc_to.account_id = 1002;";
+                "WHERE acc_from.user_id = ? AND acc_to.account_id = ?;";
 
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, name);
 
-
+        while (results.next()){
+            Transfer transfer = mapRowToTransfer(results);
+            transfers.add(transfer);
+        }
+        return transfers;
     }
 
 

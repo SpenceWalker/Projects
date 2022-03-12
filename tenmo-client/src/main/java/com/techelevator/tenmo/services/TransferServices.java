@@ -2,10 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
@@ -22,18 +19,41 @@ public class TransferServices {
         this.authToken = authToken;
     }
 
+
+
     public Transfer sendTransfer(Transfer newTransfer){
 
         Transfer transfer = null;
 
+        HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
+
         try {
-            restTemplate.exchange
-                    (API_BASE_URL + "/transfer", HttpMethod.POST, makeTransferEntity(newTransfer), Transfer.class);
-        }catch (RestClientResponseException | ResourceAccessException e){
+            ResponseEntity<Transfer> response =
+                    restTemplate.exchange(API_BASE_URL + "/transfer", HttpMethod.POST, entity, Transfer.class);
+
+            transfer = response.getBody();
+        }catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return transfer;
+
+            return transfer;
     }
+
+
+//    public Transfer sendTransfer(Transfer newTransfer){
+//
+//        Transfer transfer = null;
+//
+//        try {
+//            restTemplate.exchange
+//                    (API_BASE_URL + "/transfer", HttpMethod.POST, makeTransferEntity(newTransfer), Transfer.class);
+//        }catch (RestClientResponseException | ResourceAccessException e){
+//            BasicLogger.log(e.getMessage());
+//        }
+//        return transfer;
+//    }
+
+
 
 
 

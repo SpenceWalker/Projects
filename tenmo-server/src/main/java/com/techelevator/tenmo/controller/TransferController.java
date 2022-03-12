@@ -23,6 +23,7 @@ import com.techelevator.tenmo.security.jwt.TokenProvider;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
 @RestController
@@ -38,14 +39,6 @@ public class TransferController {
         this.transferDao = transferDao;
         this.accountDao = accountDao;
         this.userDao = userDao;
-    }
-
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Transfer getTransfer(@PathVariable int id, Principal principal)
-            throws TransferNotFoundException, AccountNotFoundException {
-
-
-        return transferDao.getTransfersSentReceived(id, principal.getName());
     }
 
 
@@ -76,6 +69,12 @@ public class TransferController {
          transferDao.createTransfer(transfer, principal.getName());
     }
 
+        @RequestMapping(path = "/history", method = RequestMethod.GET)
+        public List<Transfer> transferList (Principal principal)
+                                            throws TransferNotFoundException {
+
+        return transferDao.getTransfersSentReceived(principal.getName());
+        }
 
 
 

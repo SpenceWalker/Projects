@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import org.springframework.http.*;
@@ -74,7 +75,7 @@ public class ConsoleService {
     }
 
     public int promptForUserId(){
-        System.out.println();
+        System.out.println("Select an id");
         while (true){
             try {
                 return Integer.parseInt(scanner.nextLine());
@@ -83,6 +84,38 @@ public class ConsoleService {
             }
         }
     }
+
+
+    public Transfer promptForTransferData(){
+        return promptForTransferData(null);
+    }
+
+    public Transfer promptForTransferData(Transfer existingTransfer){
+        Transfer newTransfer = null;
+
+        while (newTransfer == null){
+            System.out.println("-------------------------------");
+            System.out.println("Please enter the following");
+            System.out.println("Transfer ID, Transfer Type ID, transfer status ID, account from, account to,  amount.");
+            if (existingTransfer != null){
+                System.out.println(existingTransfer);
+            }else{
+                System.out.println("Example: 3001, 2, 2, 2001, 2000, 500.00");
+            }
+            System.out.println("-----please god work------------");
+            System.out.println();
+            if (newTransfer == null){
+                System.out.println("invalid entry try again.");
+            }else if (newTransfer != null){
+                newTransfer.setTransferId(existingTransfer.getTransferId());
+            }
+        }   return newTransfer;
+    }
+
+
+
+
+
 //
 //    public BigDecimal promptForBigDecimal(String prompt) {
 //        System.out.print(prompt);

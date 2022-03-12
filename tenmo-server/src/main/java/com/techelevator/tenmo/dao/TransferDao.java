@@ -11,7 +11,7 @@ public interface TransferDao {
 
     public void createTransfer(Transfer transfer, String username) throws TransferNotFoundException, AccountNotFoundException;
 
-    public List<Transfer> getTransfersSentReceived(int transferId, String name) throws TransferNotFoundException;
+    public List<Transfer> getTransfersSentReceived(String name) throws TransferNotFoundException;
 
 
 
