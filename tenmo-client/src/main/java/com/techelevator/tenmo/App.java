@@ -95,7 +95,7 @@ public class App {
 
 	private void viewCurrentBalance() {
 
-        Account getBalance = accountServices.getBalance();
+        Account getBalance = accountServices.getBalance(currentUser.getToken());
         printBalanceOrError(getBalance);
 		// TODO Auto-generated method stub
 	}

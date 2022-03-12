@@ -8,6 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class JdbcTransferDao implements TransferDao{
 
@@ -59,57 +62,31 @@ public class JdbcTransferDao implements TransferDao{
 
 
     @Override
-    public Transfer getTransfersSentReceived(int transferId, String name) throws TransferNotFoundException {
+    public List<Transfer> getTransfersSentReceived(int userId, String name)
+                                                   throws TransferNotFoundException {
 
-        String sql = "SELECT transfer_id, transfer_type_id, transfer_status_id, " +
-                             "account_from, account_to, amount " +
-                     "FROM transfer " +
-                     "JOIN account " +
-                     "WHERE user_id = ?;";
+        List<Transfer> transfers = new ArrayList<>();
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,transferId);
+        String sql = "SELECT to_user.username, from_user.username, transfer.transfer_id, transfer.transfer_type_id, transfer.transfer_status_id, " +
+                "transfer.account_from, transfer.account_to, transfer.amount " +
+                "FROM transfer " +
+                "JOIN account AS acc_from ON transfer.account_from = acc_from.account_id " +
+                "JOIN account AS acc_to ON transfer.account_from = acc_to.account_id " +
+                "JOIN tenmo_user AS from_user ON acc_from.user_id = from_user.user_id " +
+                "JOIN tenmo_user AS to_user ON acc_to.user_id = to_user.user_id " +
+                "WHERE acc_from.user_id = 1001 AND acc_to.account_id = 1002;";
 
-            if (results.next()){
-                return mapRowToTransfer(results);
-        }
-            throw new TransferNotFoundException();
+
+
     }
 
-
-
-//
-//    @Override
-//    public Transfer update(Transfer transfer, int transferId, int id)
-//                          throws TransferNotFoundException {
-//
-//        String sql = "UPDATE transfer " +
-//                "SET transfer_type_id = ?," +
-//                "transfer_status_id = ?," +
-//                "account_from = ?," +
-//                "account_to = ?," +
-//                "amount = ?" +
-//                "WHERE transfer_id = ?;";
-//
-//        jdbcTemplate.update(sql,
-//                transfer.getTransferTypeId(),
-//                transfer.getTransferStatusId(),
-//                transfer.getAccountFrom(),
-//                transfer.getAccountTo(),
-//                transfer.getAmount(),
-//                transferId,
-//                id);
-//
-//        //unsure of return
-//
-//        return getTransfers(id);
-//    }
-//
 
 
 
     private Transfer mapRowToTransfer(SqlRowSet row){
         Transfer transfer = new Transfer();
 
+        transfer.setTransferId(row.getInt("transfer_id"));
         transfer.setTransferTypeId(row.getInt("transfer_type_id"));
         transfer.setTransferStatusId(row.getInt("transfer_status_id"));
         transfer.setAccountFrom(row.getInt("account_from"));

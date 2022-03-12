@@ -20,7 +20,7 @@ public class AccountServices{
         this.authToken = authToken;
     }
 
-    public Account getBalance(){
+    public Account getBalance(String token){
 
         Account getBalance = null;
 
