@@ -14,17 +14,15 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
-public class JdbcAccountTest extends BaseDaoTest{
+public class JdbcAccountTest extends BaseDaoTest {
 
     private static final Account ACCOUNT_1 = new Account(1, 1, 1000);
     private static final Account ACCOUNT_2 = new Account(2,2,1000);
     private static final Account ACCOUNT_3 = new Account(3, 3,1000);
 
-    private JdbcTemplate sut;
+    private JdbcAccountDao sut;
 
-//    @Before
-//    public void setup(){
-//        sut = new JdbcAccountT(dataSource)
-//    }
+
+
 
 }
