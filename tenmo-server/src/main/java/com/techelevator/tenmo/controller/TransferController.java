@@ -72,7 +72,7 @@ public class TransferController {
 
 
         @RequestMapping(path = "/history/{fromId}/{toId}", method = RequestMethod.GET)
-        public List<Transfer> transferList (@PathVariable int fromId,@PathVariable int toId)
+        public List<Transfer> transferListHistory (@PathVariable int fromId,@PathVariable int toId)
                                             throws TransferNotFoundException {
 
         return transferDao.getTransfersSentReceived(fromId, toId);

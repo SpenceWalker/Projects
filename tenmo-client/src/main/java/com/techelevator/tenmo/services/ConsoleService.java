@@ -1,10 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import org.springframework.http.*;
 
 import java.math.BigDecimal;
@@ -154,16 +151,16 @@ public class ConsoleService {
 
     }
 
-    public void printBalance(Account accounts){
+    AccountServices accountServices = new AccountServices();
+    public void printBalance(Account account){
         System.out.println("----------------");
         System.out.println("Welcome valued customer");
         System.out.println("Account  details ");
-        if (accounts == null){
-            System.out.println("No account could be found, please try again.");
-        }else {
-            System.out.println("Account Id: " + accounts.getAccountId());
-            System.out.println("User Id: " + accounts.getUserId());
-            System.out.println("Account balance: " + accounts.getBalance());
+        System.out.println("Account Id: " + account.getAccountId());
+        System.out.println("User Id: " + account.getUserId());
+        System.out.println("Account balance: " + account.getBalance());
+//            System.out.println("Account balance: " + accountServices.getBalance());
         }
     }
-}
+
+
