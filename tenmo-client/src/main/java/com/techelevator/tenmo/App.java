@@ -63,8 +63,13 @@ public class App {
         currentUser = authenticationService.login(credentials);
         if (currentUser == null) {
             consoleService.printErrorMessage();
+        }else {
+            transferServices.setAuthToken(currentUser.getToken());
+            userService.setAuthToken(currentUser.getToken());
+            accountServices.setAuthToken(currentUser.getToken());
         }
-    }
+        }
+
 
     private void mainMenu() {
         int menuSelection = -1;
@@ -119,21 +124,39 @@ public class App {
 		// TODO Auto-generated method stub
 
 
-        Transfer transferSent = consoleService.promptForTransferData();
-        Transfer transferFromServer = transferServices.sendTransfer(transferSent);
-
-        if (transferFromServer == null){
-            consoleService.printErrorMessage();
-        }
 
         User[] users = userService.getListOfAllUsers();
 
-        if (users == null){
-            consoleService.printErrorMessage();
-        }else{
-            consoleService.printAllUsers(users);
+        if (users != null){
+            consoleService.printUserSelection(users);
+            int userId = consoleService.promptForUserId();
+            if (userId > 0){
+                User user = userService.getUserById(userId);
+                if (user != null){
+                    consoleService.printSingleUser(user);
+
+                } else {
+                    consoleService.printErrorMessage();
+                }
+
+            }else{
+                consoleService.printErrorMessage();
+            }
         }
+
+
+//        if (users == null){
+//            consoleService.printErrorMessage();
+//        }else{
+//            consoleService.printAllUsers(users);
+//        }
 //        int userId = consoleService.promptForUserId();
+
+        Transfer transferSent = consoleService.promptForTransferData();
+        transferServices.sendTransfer(transferSent);
+
+
+//        int accountFrom = accountServices.
 	}
 
 //    BigDecimal bucks = consoleService.promptForBigDecimal("Enter amount as a decimal number");

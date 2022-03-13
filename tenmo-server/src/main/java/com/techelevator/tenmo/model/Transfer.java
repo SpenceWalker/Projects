@@ -7,7 +7,6 @@ import javax.validation.constraints.PositiveOrZero;
 
 public class Transfer {
 
-    @Min(value = 1, message = "transferId should be a positive integer value.")
     private int transferId;
 
     @Min(value = 1, message = "transferTypeId should be a positive integer value.")

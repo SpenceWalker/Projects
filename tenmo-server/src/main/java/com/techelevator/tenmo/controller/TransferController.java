@@ -69,11 +69,13 @@ public class TransferController {
          transferDao.createTransfer(transfer, principal.getName());
     }
 
+
+
         @RequestMapping(path = "/history", method = RequestMethod.GET)
-        public List<Transfer> transferList (Principal principal)
+        public List<Transfer> transferList (Principal principal, int id, int tranId)
                                             throws TransferNotFoundException {
 
-        return transferDao.getTransfersSentReceived(principal.getName());
+        return transferDao.getTransfersSentReceived(principal.getName(), id, tranId);
         }
 
 

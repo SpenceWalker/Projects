@@ -21,37 +21,22 @@ public class TransferServices {
 
 
 
-    public Transfer sendTransfer(Transfer newTransfer){
+    public void sendTransfer(Transfer newTransfer){
 
-        Transfer transfer = null;
 
         HttpEntity<Transfer> entity = makeTransferEntity(newTransfer);
 
         try {
-            ResponseEntity<Transfer> response =
-                    restTemplate.exchange(API_BASE_URL + "/transfer", HttpMethod.POST, entity, Transfer.class);
+            ResponseEntity<Void> response =
+                    restTemplate.exchange(API_BASE_URL + "/transfer", HttpMethod.POST, entity, Void.class);
 
-            transfer = response.getBody();
         }catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
 
-            return transfer;
     }
 
 
-//    public Transfer sendTransfer(Transfer newTransfer){
-//
-//        Transfer transfer = null;
-//
-//        try {
-//            restTemplate.exchange
-//                    (API_BASE_URL + "/transfer", HttpMethod.POST, makeTransferEntity(newTransfer), Transfer.class);
-//        }catch (RestClientResponseException | ResourceAccessException e){
-//            BasicLogger.log(e.getMessage());
-//        }
-//        return transfer;
-//    }
 
 
 

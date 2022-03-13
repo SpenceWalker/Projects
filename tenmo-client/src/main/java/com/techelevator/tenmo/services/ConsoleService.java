@@ -75,7 +75,7 @@ public class ConsoleService {
     }
 
     public int promptForUserId(){
-        System.out.println("Select an id");
+        System.out.println("Select an id (that means select one of the numbers on the left hand side)");
         while (true){
             try {
                 return Integer.parseInt(scanner.nextLine());
@@ -93,21 +93,29 @@ public class ConsoleService {
     public Transfer promptForTransferData(Transfer existingTransfer){
         Transfer newTransfer = null;
 
-        while (newTransfer == null){
+        if (newTransfer == null){
             System.out.println("-------------------------------");
             System.out.println("Please enter the following");
-            System.out.println("Transfer ID, Transfer Type ID, transfer status ID, account from, account to,  amount.");
+            System.out.println("Account from, account to,  amount.");
             if (existingTransfer != null){
                 System.out.println(existingTransfer);
             }else{
-                System.out.println("Example: 3001, 2, 2, 2001, 2000, 500.00");
+                System.out.println("Example: 2001, 2000, 500.00");
             }
             System.out.println("-----please god work------------");
+            String userInput = (scanner.nextLine());
+           String [] input = userInput.split(", ");
+           newTransfer = new Transfer();
+
+            newTransfer.setAccountFrom(Integer.parseInt(input[0]));
+            newTransfer.setAccountTo(Integer.parseInt(input[1]));
+            newTransfer.setAmount(Double.parseDouble(input[2]));
+            newTransfer.setTransferTypeId(2);
+            newTransfer.setTransferStatusId(2);
+
             System.out.println();
             if (newTransfer == null){
                 System.out.println("invalid entry try again.");
-            }else if (newTransfer != null){
-                newTransfer.setTransferId(existingTransfer.getTransferId());
             }
         }   return newTransfer;
     }
@@ -137,14 +145,51 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-    public void printAllUsers(User[] users){
-        System.out.println("Here is a list of all available users to send money to");
+
+    public void printUserMenu(User[] users){
+        printUserSelection(users);
+        System.out.println("please kill me");
+        System.out.println();
     }
+
+
+    public void printUserSelection(User[] users){
+        if (users != null){
+            System.out.println("---------------------");
+            System.out.println("You may send money to the following list of people");
+            System.out.println("--------------------------------------------------");
+            System.out.println("(Send it to spencer)");
+            System.out.println("---------------------");
+            for (User user : users){
+                System.out.println(user.getId() + ": " + user.getUsername());
+            }
+        }
+    }
+
+    public void printSingleUser(User user){
+        System.out.println("if this works on the first try ill do a front flip");
+        System.out.println("Here is a list of users to send money too.");
+        if (user != null){
+            System.out.println("-------------------------------------------");
+            System.out.println("You should just send your money to spencer");
+            System.out.println("-------------------------------------------");
+            System.out.println("Id: " + user.getId());
+            System.out.println("Username: " + user.getUsername());
+        }
+
+    }
+
+    public void sendSomeBenjamins(User user){
+        System.out.println("-----------");
+        System.out.println("please work");
+        System.out.println("Select a user you would like to share some money with");
+    }
+
 
     public void printBalance(Account accounts){
         System.out.println("----------------");
         System.out.println("Welcome valued customer");
-        System.out.println("Account Balance details ");
+        System.out.println("Account  details ");
         if (accounts == null){
             System.out.println("No account could be found, please try again.");
         }else {

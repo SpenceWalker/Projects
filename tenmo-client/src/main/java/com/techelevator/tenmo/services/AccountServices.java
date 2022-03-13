@@ -20,6 +20,10 @@ public class AccountServices{
         this.authToken = authToken;
     }
 
+
+
+
+
     public Account getBalance(String token){
 
         Account getBalance = null;
@@ -27,7 +31,7 @@ public class AccountServices{
 
         try {
             ResponseEntity<Account> response =
-                    restTemplate.exchange(API_BASE_URL + "account/user", HttpMethod.GET, makeAuthEntity(), Account.class);
+                    restTemplate.exchange(API_BASE_URL + "account/user",  HttpMethod.GET, makeAuthEntity(), Account.class);
 
             getBalance = response.getBody();
 

@@ -21,6 +21,24 @@ public class UserService {
         this.authToken = authToken;
     }
 
+
+    public User getUserById(int userId){
+
+        User user  = null;
+
+        try {
+            ResponseEntity<User>response =
+                    restTemplate.exchange(API_BASE_URL + "users/" + userId, HttpMethod.GET, makeAuthEntity(), User.class);
+
+            user = response.getBody();
+
+
+        }catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
+        return user;
+    }
+
     public User[] getListOfAllUsers(){
 
         User[] users = null;
