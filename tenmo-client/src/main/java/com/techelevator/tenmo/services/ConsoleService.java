@@ -85,7 +85,6 @@ public class ConsoleService {
         }
     }
 
-
     public Transfer promptForTransferData(){
         return promptForTransferData(null);
     }
@@ -120,22 +119,6 @@ public class ConsoleService {
         }   return newTransfer;
     }
 
-
-
-
-
-//
-//    public BigDecimal promptForBigDecimal(String prompt) {
-//        System.out.print(prompt);
-//        while (true) {
-//            try {
-//                return new BigDecimal(scanner.nextLine());
-//            } catch (NumberFormatException e) {
-//                System.out.println("Please enter a decimal number.");
-//            }
-//        }
-//    }
-
     public void pause() {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
@@ -144,14 +127,6 @@ public class ConsoleService {
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
-
-
-    public void printUserMenu(User[] users){
-        printUserSelection(users);
-        System.out.println("please kill me");
-        System.out.println();
-    }
-
 
     public void printUserSelection(User[] users){
         if (users != null){
@@ -178,13 +153,6 @@ public class ConsoleService {
         }
 
     }
-
-    public void sendSomeBenjamins(User user){
-        System.out.println("-----------");
-        System.out.println("please work");
-        System.out.println("Select a user you would like to share some money with");
-    }
-
 
     public void printBalance(Account accounts){
         System.out.println("----------------");

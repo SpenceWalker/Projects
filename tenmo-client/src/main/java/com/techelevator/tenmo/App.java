@@ -123,8 +123,6 @@ public class App {
 	private void sendBucks() {
 		// TODO Auto-generated method stub
 
-
-
         User[] users = userService.getListOfAllUsers();
 
         if (users != null){
@@ -144,22 +142,11 @@ public class App {
             }
         }
 
-
-//        if (users == null){
-//            consoleService.printErrorMessage();
-//        }else{
-//            consoleService.printAllUsers(users);
-//        }
-//        int userId = consoleService.promptForUserId();
-
         Transfer transferSent = consoleService.promptForTransferData();
         transferServices.sendTransfer(transferSent);
 
 
-//        int accountFrom = accountServices.
 	}
-
-//    BigDecimal bucks = consoleService.promptForBigDecimal("Enter amount as a decimal number");
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
