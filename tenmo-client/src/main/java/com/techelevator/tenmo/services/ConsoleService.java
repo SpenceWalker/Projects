@@ -151,15 +151,20 @@ public class ConsoleService {
 
     }
 
-    AccountServices accountServices = new AccountServices();
+    public void printTransferHistory(Transfer transfer){
+        System.out.println("----please god work--------");
+        System.out.println("Transfer history is as follows");
+        System.out.println(transfer.getAccountFrom());
+    }
+
+
+
     public void printBalance(Account account){
         System.out.println("----------------");
         System.out.println("Welcome valued customer");
         System.out.println("Account  details ");
-        System.out.println("Account Id: " + account.getAccountId());
-        System.out.println("User Id: " + account.getUserId());
-        System.out.println("Account balance: " + account.getBalance());
-//            System.out.println("Account balance: " + accountServices.getBalance());
+            System.out.println("Account balance: " + account.getBalance());
+        System.out.println("Account Id: " + account.getUserId());
         }
     }
 

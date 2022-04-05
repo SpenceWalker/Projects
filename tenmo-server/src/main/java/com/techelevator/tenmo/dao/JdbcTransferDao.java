@@ -67,16 +67,14 @@ public class JdbcTransferDao implements TransferDao{
 
         List<Transfer> transfers = new ArrayList<>();
 
-        String sql = "SELECT to_user.username, from_user.username, transfer.transfer_id, transfer.transfer_type_id, transfer.transfer_status_id, " +
-                "transfer.account_from, transfer.account_to, transfer.amount, type_trans.transfer_type_desc, status_trans.transfer_status_desc " +
+        String sql = "SELECT to_user.username AS userone, from_user.username AS usertwo, transfer.transfer_id, transfer.transfer_type_id, transfer.transfer_status_id, " +
+                "transfer.account_from, transfer.account_to, transfer.amount " +
                 "FROM transfer " +
                 "JOIN account AS acc_from ON transfer.account_from = acc_from.account_id " +
                 "JOIN account AS acc_to ON transfer.account_from = acc_to.account_id " +
-                "JOIN transfer_type AS type_trans ON transfer.transfer_type_id = type_trans.transfer_type_id " +
-                "JOIN transfer_status AS status_trans ON transfer.transfer_status_id = status_trans.transfer_status_id " +
                 "JOIN tenmo_user AS from_user ON acc_from.user_id = from_user.user_id " +
                 "JOIN tenmo_user AS to_user ON acc_to.user_id = to_user.user_id " +
-                "WHERE acc_from.account_id = ? AND acc_to.account_id = ?;";
+                "WHERE to_user.user_id = ? OR from_user.user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql,accountFromId, accountToId);
 

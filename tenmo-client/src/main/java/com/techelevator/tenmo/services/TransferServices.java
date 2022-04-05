@@ -36,10 +36,21 @@ public class TransferServices {
 
     }
 
+    public Transfer[] transferHistory(int from, int to) {
 
 
 
+    Transfer[] transfers = null;
 
+    try {
+        transfers = restTemplate.getForObject(API_BASE_URL + "/transfer/history/" + from + "/" +to + makeAuthEntity(), Transfer[].class);
+
+    }catch (RestClientResponseException | ResourceAccessException e){
+        BasicLogger.log(e.getMessage());
+    }
+    return  transfers;
+
+    }
 
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {

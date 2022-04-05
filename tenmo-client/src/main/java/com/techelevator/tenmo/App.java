@@ -111,6 +111,8 @@ public class App {
     }
 
 	private void viewTransferHistory() {
+
+
 		// TODO Auto-generated method stub
 
 
@@ -139,8 +141,6 @@ public class App {
                     consoleService.printErrorMessage();
                 }
 
-            }else{
-                consoleService.printErrorMessage();
             }
         }
 
